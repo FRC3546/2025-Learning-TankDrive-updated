@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -43,6 +44,8 @@ public class RobotContainer {
       new Joystick(OperatorConstants.leftJoystick);
   private final Joystick rightJoystick =
       new Joystick(OperatorConstants.rightJoystick);
+  private final XboxController droneController =
+      new XboxController(OperatorConstants.droneJoystick);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -60,6 +63,7 @@ public class RobotContainer {
     Trigger leftTrigger = new Trigger(() -> leftJoystick.getTrigger());
     Trigger rightFrontButton = new Trigger(() -> rightJoystick.getRawButton(2));
     Trigger leftFrontButton = new Trigger(() -> leftJoystick.getRawButton(2));
+    Trigger droneSwtich = new Trigger(() -> droneController.getRawButton(2));
 
     // Set the default command for the drivetrain to drive using the joysticks
     m_drivetrain.setDefaultCommand(
@@ -73,6 +77,7 @@ public class RobotContainer {
     leftTrigger.onTrue(new InstantCommand(() -> m_drivetrain.setDriveState(driveState.halfSpeed))).onFalse(new InstantCommand(() -> m_drivetrain.setDriveState(driveState.forward)));
     rightFrontButton.onTrue(new InstantCommand(() -> m_pneumatics.setPneumaticState(pneumaticStates.open))).onFalse(new InstantCommand(() -> m_pneumatics.setPneumaticState(pneumaticStates.close)));
     leftFrontButton.onTrue(new InstantCommand(() -> m_pneumatics.setPneumaticState(pneumaticStates.toggle)));
+    droneSwtich.onTrue(new InstantCommand(() -> m_pneumatics.setPneumaticState(pneumaticStates.open))).onFalse(new InstantCommand(() -> m_pneumatics.setPneumaticState(pneumaticStates.close)));
 
     /*Create an inline sequence to run when the operator presses and holds the A (green) button. Run the PrepareLaunch
      * command for 1 seconds and then run the LaunchNote command */

@@ -18,6 +18,7 @@ public final class Constants {
     // tab of the DriverStation
     public static final int leftJoystick = 0;
     public static final int rightJoystick = 1;
+    public static final int droneJoystick = 2;
   }
 
   public static class DrivetrainConstants {
